@@ -9,6 +9,7 @@ use App\Support\Values\AmountValue;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $payable_id
  * @property int $method_id
  * @property PaymentDriverEnum $driver
+ * @property PaymentMethod $method
  * @property Order $payable
  *
  */
@@ -45,6 +47,11 @@ class Payment extends Model
         'amount' => AmountValue::class,
         'driver' => PaymentDriverEnum::class,
     ];
+
+    public function method(): BelongsTo
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
 
     public function payable(): MorphTo
     {

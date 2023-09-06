@@ -58,24 +58,47 @@
                         <div class="col-8">
                             {{$payment->payable->getPayableName()}}
                         </div>
-
-
                     </div>
                 </li>
             </ul>
-            <div class="card-body">
 
-                <form action="" method="POST">
-                    @csrf
-                    <p>
-                        Выберите способ оплаты
-                    </p>
-                    <button type="submit" class="btn btn-primary">
-                        Перейти к оплате
-                    </button>
-                </form>
-            </div>
+            @if($paymentMethods->isEmpty())
+                <div class="card-body">
+                    <div>Извините, оплата временно недоступна (=</div>
+                </div>
+            @else
+                <div class="card-body">
+                    @if($errors->any())
+                        <div class="mb-3 text-danger">
+                            {{$errors->first()}}
+                        </div>
+                    @endif
+                    <form action="{{route('payments.method',$payment->uuid)}}" method="POST">
+                        @csrf
 
+                        <div class="row">
+                            <div class="col-12 col-md-4">
+                                <div class="mb-3 mb-md-0">
+
+                                        <select name="method_id" class="form-control">
+                                            <option value="" disabled selected>Способ оплаты</option>
+                                            @foreach($paymentMethods as $paymentMethod)
+                                                <option value="{{$paymentMethod->id}}">{{$paymentMethod->name}}</option>
+                                            @endforeach
+                                        </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    Продолжить
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+            @endif
         </div>
 
     </div>

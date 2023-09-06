@@ -29,7 +29,7 @@ class InstallCurrenciesCommand extends Command
         $this->info('Валюты установлены');
     }
 
-    private function installCurrencies()
+    private function installCurrencies(): void
     {
         Currency::query()->firstOrCreate([
             'id' => Currency::RUB
